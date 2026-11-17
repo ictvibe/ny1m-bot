@@ -1,0 +1,316 @@
+<!doctype html>
+<html lang="fa" dir="rtl"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>راهنمای ربات ستاپ ۱ دقیقه</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<style>
+:root{--bg:#f3f5f8;--surface:#ffffff;--surface-2:#e8ecf3;--fg:#14213a;--fg-2:#46536f;--line:#d8deea;--accent:#1f5fff;--accent-soft:#e5edff;--on-accent:#ffffff;--warn:#b8430a;--warn-soft:#fff0e3;--ok:#12733a;--ok-soft:#e3f5ea;--code-bg:#edf1f7;--code-fg:#14213a;--chip:rgba(20,33,58,.08);
+  --ui:"Vazirmatn","Segoe UI",Tahoma,"Noto Sans Arabic","Geeza Pro",system-ui,sans-serif;
+  --mono:"JetBrains Mono",ui-monospace,"SF Mono",Consolas,"Liberation Mono",monospace}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){--bg:#0c1322;--surface:#131c30;--surface-2:#1b2742;--fg:#e6ecf8;--fg-2:#a3b2cf;--line:#26334f;--accent:#7ba5ff;--accent-soft:#1a2a55;--on-accent:#0c1322;--warn:#ffa56b;--warn-soft:#2f1f12;--ok:#58cc88;--ok-soft:#12301f;--code-bg:#0a101d;--code-fg:#dbe5f7;--chip:rgba(230,236,248,.12);color-scheme:dark}}
+:root[data-theme="dark"]{--bg:#0c1322;--surface:#131c30;--surface-2:#1b2742;--fg:#e6ecf8;--fg-2:#a3b2cf;--line:#26334f;--accent:#7ba5ff;--accent-soft:#1a2a55;--on-accent:#0c1322;--warn:#ffa56b;--warn-soft:#2f1f12;--ok:#58cc88;--ok-soft:#12301f;--code-bg:#0a101d;--code-fg:#dbe5f7;--chip:rgba(230,236,248,.12);color-scheme:dark}
+*,*::before,*::after{box-sizing:border-box}
+html{scroll-behavior:smooth}
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}*{transition:none!important}}
+body{margin:0;background:var(--bg);color:var(--fg);font:400 16px/1.95 var(--ui);-webkit-text-size-adjust:100%}
+/* Layout: one reading column; on wide screens a sticky step index sits at the start side (right in RTL). Steps are divided by hairlines, not boxed. */
+.wrap{max-width:1120px;margin-inline:auto;padding-block:28px 72px;
+  padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+h1,h2,h3,h4{margin:0;line-height:1.5;text-wrap:balance}
+h1{font-size:clamp(26px,5.4vw,40px);font-weight:800;line-height:1.4}
+h2{font-size:clamp(21px,3.4vw,26px);font-weight:800;margin-bottom:8px}
+h3{font-size:19px;font-weight:700}
+h4{font-size:16px;font-weight:700;margin-block:20px 6px}
+p{margin:10px 0}
+strong{font-weight:700}
+a{color:var(--accent);text-underline-offset:3px}
+a:focus-visible,button:focus-visible,summary:focus-visible{outline:2px solid var(--accent);outline-offset:2px;border-radius:6px}
+code{font-family:var(--mono);font-size:.86em;background:var(--chip);padding:1px 6px;border-radius:6px;unicode-bidi:isolate;overflow-wrap:anywhere}
+ol,ul{padding-inline-start:1.6em;margin:10px 0}
+ol{list-style-type:persian}
+li+li{margin-top:8px}
+.hero{display:grid;gap:14px;padding-bottom:26px}
+.eyebrow{font-size:13.5px;font-weight:700;color:var(--accent);line-height:1.7}
+.lead{margin:0;max-width:64ch;color:var(--fg-2);font-size:17px}
+.chips{display:flex;flex-wrap:wrap;gap:8px}
+.chip{font-size:13.5px;font-weight:500;padding:2px 12px;border-radius:999px;background:var(--surface);border:1px solid var(--line);color:var(--fg-2)}
+.progress{display:grid;gap:10px;background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:14px 16px;max-width:560px}
+.p-row{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;font-size:15px}
+.p-row b{font-weight:700}
+.bar{height:8px;border-radius:999px;background:var(--surface-2);overflow:hidden}
+.bar>i{display:block;height:100%;width:0;background:var(--accent);border-radius:inherit;transition:width .25s ease}
+.ghost{font:500 13px/1 var(--ui);padding:7px 12px;border-radius:8px;border:1px solid var(--line);background:transparent;color:var(--fg-2);cursor:pointer}
+.layout{display:grid;gap:24px;grid-template-columns:minmax(0,1fr)}
+main{min-width:0}
+.toc{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:4px 14px;min-width:0}
+.toc summary{cursor:pointer;font-weight:700;padding:10px 0;list-style:none}
+.toc summary::-webkit-details-marker{display:none}
+.toc ol{list-style:none;padding:0;margin:2px 0 8px}
+.toc li{margin:0}
+.toc a{display:flex;gap:10px;align-items:baseline;padding:4px 0;color:var(--fg-2);text-decoration:none;font-size:14.5px;line-height:1.7}
+.toc a:hover{color:var(--accent)}
+.toc .dot{inline-size:22px;flex:none;text-align:center;font-weight:700;font-size:13px;color:var(--accent)}
+.toc a.is-done{color:var(--ok)}
+.toc a.is-done .dot{color:var(--ok)}
+.toc .group{font-size:12.5px;font-weight:700;color:var(--fg-2);margin-top:8px;padding-top:10px;border-top:1px solid var(--line)}
+@media (min-width:980px){
+  .layout{grid-template-columns:250px minmax(0,1fr);align-items:start;gap:44px}
+  .toc{position:sticky;top:calc(env(safe-area-inset-top,0px) + 16px);max-height:calc(100vh - 40px);overflow:auto}
+  .toc summary{pointer-events:none;cursor:default}
+}
+.section{padding-block:34px 28px;border-top:1px solid var(--line)}
+.step{padding-block:24px;border-top:1px solid var(--line)}
+.steps>.step:first-child{border-top:0;padding-top:6px}
+.step-head{display:flex;align-items:center;gap:12px;flex-wrap:wrap}
+.num{flex:none;width:36px;height:36px;border-radius:50%;display:grid;place-items:center;font-weight:800;font-size:16px;line-height:1;background:var(--accent-soft);color:var(--accent)}
+.step h3{flex:1 1 200px;min-width:0}
+.step.is-done .num{background:var(--ok);color:#fff}
+.done{display:inline-flex;align-items:center;gap:8px;font:500 14px/1 var(--ui);padding:8px 12px;border-radius:999px;border:1px solid var(--line);background:var(--surface);color:var(--fg-2);cursor:pointer}
+.done .box{width:16px;height:16px;border-radius:5px;border:1.5px solid var(--fg-2);display:grid;place-items:center;font-size:12px;line-height:1}
+.done[aria-pressed="true"]{background:var(--ok-soft);border-color:var(--ok);color:var(--ok)}
+.done[aria-pressed="true"] .box{background:var(--ok);border-color:var(--ok);color:#fff}
+.done[aria-pressed="true"] .box::after{content:"✓"}
+.step-body{padding-inline-start:48px}
+@media (max-width:560px){.step-body{padding-inline-start:0}}
+.callout{display:grid;gap:2px;margin-block:14px;padding:12px 14px;border-radius:10px;font-size:15px;line-height:1.9}
+.callout .tag{font-size:12.5px;font-weight:800}
+.callout.note{background:var(--accent-soft)}
+.callout.note .tag{color:var(--accent)}
+.callout.warn{background:var(--warn-soft)}
+.callout.warn .tag{color:var(--warn)}
+.code{border:1px solid var(--line);border-radius:10px;overflow:hidden;margin-block:12px;background:var(--code-bg);min-width:0}
+.code-bar{display:flex;justify-content:space-between;align-items:center;gap:8px;padding:6px 10px;border-bottom:1px solid var(--line);font:500 12px/1.4 var(--ui);color:var(--fg-2)}
+.code-bar .lbl{unicode-bidi:plaintext}
+.code pre{margin:0;padding:12px 14px;overflow-x:auto;direction:ltr;text-align:left;font:400 13.5px/1.75 var(--mono);color:var(--code-fg);white-space:pre}
+.code pre code{background:none;padding:0;font-size:inherit;overflow-wrap:normal}
+.copy{font:500 12.5px/1 var(--ui);padding:6px 12px;border-radius:7px;border:1px solid var(--line);background:var(--surface);color:var(--fg);cursor:pointer}
+.copy.ok{background:var(--ok-soft);border-color:var(--ok);color:var(--ok)}
+.settings{display:grid;gap:10px;margin-block:12px}
+.set-row{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:10px 14px;min-width:0}
+.set-head{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:8px}
+.set-row p{margin:4px 0 0;color:var(--fg-2);font-size:15px}
+.pill{font-size:12.5px;padding:1px 10px;border-radius:999px;background:var(--surface-2);color:var(--fg-2);white-space:nowrap}
+.qa{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:0 14px;margin-block:8px}
+.qa summary{cursor:pointer;font-weight:700;padding:12px 0;list-style:none;display:flex;gap:10px;justify-content:space-between;align-items:center}
+.qa summary::-webkit-details-marker{display:none}
+.qa summary::after{content:"+";color:var(--accent);font-size:20px;line-height:1;flex:none}
+.qa[open] summary::after{content:"−"}
+.qa>div{padding-bottom:12px;color:var(--fg-2);font-size:15.5px}
+.facts{display:grid;gap:12px;grid-template-columns:repeat(auto-fit,minmax(min(100%,300px),1fr));margin-block:12px}
+.fact{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:14px 16px;display:grid;gap:6px;align-content:start;min-width:0}
+.fact h4{margin:0;font-size:15.5px;line-height:1.7}
+.fact .res{font-weight:700;font-size:15px;line-height:1.8}
+.fact .meta{color:var(--fg-2);font-size:14.5px;line-height:1.8}
+.status{justify-self:start;font-size:12.5px;font-weight:700;padding:1px 10px;border-radius:999px;background:var(--surface-2);color:var(--fg-2)}
+.status.ok,.status.role-backup{background:var(--ok-soft);color:var(--ok)}
+.status.no{background:var(--warn-soft);color:var(--warn)}
+.status.role-main{background:var(--accent-soft);color:var(--accent)}
+.fact dl{margin:0;display:grid;gap:2px}
+.fact dt{font-size:12.5px;font-weight:700;color:var(--fg-2);margin-top:8px}
+.fact dd{margin:0;font-size:14.5px;line-height:1.85}
+.refs{font-size:14.5px}
+.foot{margin-top:30px;padding-top:18px;border-top:1px solid var(--line);color:var(--fg-2);font-size:14px}
+</style>
+</head>
+<body><div class="wrap" dir="rtl" lang="fa"><header class="hero"><div class="eyebrow">ربات تلگرام · فقط تایم‌فریم ۱ دقیقه · ۰۸:۳۰ تا ۱۱:۳۰ نیویورک</div><h1>راهنمای راه‌اندازی ربات ستاپ ۱ دقیقه</h1><p class="lead">این ربات شش نماد (NAS100، US30، SPX500، XAUUSD، EURUSD، GBPUSD) را فقط در بازه‌ی ۰۸:۳۰ تا ۱۱:۳۰ نیویورک رصد می‌کند و هر ناحیه‌ی هانت + شیفت را همراه چارت به تلگرام می‌فرستد. روی GitHub اجرا می‌شود؛ بعد از راه‌اندازی به کامپیوتر یا اینترنت شما نیازی ندارد.</p><div class="chips"><span class="chip">حدود ۴۰ دقیقه کار</span><span class="chip">بدون برنامه‌نویسی</span><span class="chip">رایگان</span></div><div class="progress"><div class="p-row"><b id="pcount">۰ از ۱۱ مرحله انجام شد</b><button class="ghost" id="reset" type="button">پاک‌کردن علامت‌ها</button></div><div class="bar" role="presentation"><i id="pbar"></i></div></div></header><div class="layout"><details class="toc" id="toc" open><summary id="toc-sum">فهرست مراحل</summary><nav aria-label="فهرست"><ol><li><a href="#s1" data-toc="s1"><span class="dot" data-n="۱">۱</span><span>حساب GitHub</span></a></li><li><a href="#s2" data-toc="s2"><span class="dot" data-n="۲">۲</span><span>ساخت مخزن عمومی (Public)</span></a></li><li><a href="#s3" data-toc="s3"><span class="dot" data-n="۳">۳</span><span>بارگذاری فایل‌های ربات</span></a></li><li><a href="#s4" data-toc="s4"><span class="dot" data-n="۴">۴</span><span>ساخت ربات تلگرام</span></a></li><li><a href="#s5" data-toc="s5"><span class="dot" data-n="۵">۵</span><span>پیدا کردن شناسه‌ی چت (Chat ID)</span></a></li><li><a href="#s6" data-toc="s6"><span class="dot" data-n="۶">۶</span><span>ثبت توکن و شناسه در GitHub (Secrets)</span></a></li><li><a href="#s7" data-toc="s7"><span class="dot" data-n="۷">۷</span><span>تست اتصال و selftest</span></a></li><li><a href="#s8" data-toc="s8"><span class="dot" data-n="۸">۸</span><span>سنجش تأخیر منابع داده</span></a></li><li><a href="#s9" data-toc="s9"><span class="dot" data-n="۹">۹</span><span>بک‌تست روی داده‌ی واقعی</span></a></li><li><a href="#s10" data-toc="s10"><span class="dot" data-n="۱۰">۱۰</span><span>اجرای خودکار روزانه</span></a></li><li><a href="#s11" data-toc="s11"><span class="dot" data-n="۱۱">۱۱</span><span>trigger پشتیبان با cron-job.org</span></a></li></ol><div class="group">بخش‌های دیگر</div><ol><li><a href="#before"><span class="dot">•</span><span>قبل از شروع</span></a></li><li><a href="#daily"><span class="dot">•</span><span>هر روز چه می‌بینید</span></a></li><li><a href="#options"><span class="dot">•</span><span>تنظیمات اختیاری</span></a></li><li><a href="#trouble"><span class="dot">•</span><span>رفع مشکل</span></a></li><li><a href="#planb"><span class="dot">•</span><span>اگر GitHub اجرا را متوقف کرد</span></a></li><li><a href="#report"><span class="dot">•</span><span>گزارش منابع داده و تأخیر</span></a></li><li><a href="#manual"><span class="dot">•</span><span>روش دستی برای فایل‌های workflow</span></a></li></ol></nav></details><main><section class="section before" id="before"><h2>قبل از شروع: چهار نکته‌ی صادقانه</h2><ol><li><strong>مخزن باید عمومی (Public) باشد.</strong> سهمیه‌ی رایگان مخزن خصوصی ماهانه ۲۰۰۰ دقیقه است و این ربات ماهانه حدود ۶۰۰۰ تا ۷۳۰۰ دقیقه اجرا می‌شود. عمومی بودن یعنی کد ربات (منطق ستاپ) و ناحیه‌هایی که هر روز ثبت می‌شوند (در شاخه‌ی <code dir="ltr">bot-state</code>) برای هر کسی که مخزن را پیدا کند دیدنی است. توکن ربات و شناسه‌ی چت در Secrets می‌مانند و دیده نمی‌شوند.</li><li><strong>شرایط استفاده‌ی GitHub یک نقطه‌ی خاکستری دارد.</strong> GitHub می‌نویسد روی اجراکننده‌های خودش هر فعالیتی که به تولید، تست، استقرار یا انتشار پروژه‌ی نرم‌افزاری مربوط نباشد نباید انجام شود (<a href="https://docs.github.com/en/site-policy/github-terms/github-terms-for-additional-products-and-features" target="_blank" rel="noopener noreferrer">متن شرایط</a>). اجرای زمان‌بندی‌شده‌ی یک ربات رصد بازار به این منطقه نزدیک است: رایج است، ولی نمی‌توانم تضمین کنم GitHub ایرادی نگیرد. برای این ربات یک مخزن جدا بسازید و برای حالت توقف، بخش «اگر GitHub اجرا را متوقف کرد» را ببینید.</li><li><strong>تأخیر واقعی هنوز اندازه‌گیری نشده.</strong> از محیطی که من کار می‌کردم اتصال به Yahoo و تلگرام ممکن نبود؛ پس تأخیر واقعی داده و پیام را نمی‌توانم تضمین کنم. مرحله‌ی ۸ آن را از خود سرور GitHub اندازه می‌گیرد. قبل از تکیه بر ربات برای معامله‌ی واقعی، آن را در ساعت بازار اجرا کنید.</li><li><strong>قیمت شاخص‌ها از فیوچرز است.</strong> برای NAS100، US30 و SPX500 داده‌ی رایگانِ فیوچرز (<code dir="ltr">NQ=F</code>، <code dir="ltr">YM=F</code>، <code dir="ltr">ES=F</code>) استفاده می‌شود، چون شاخص نقدی قبل از ۰۹:۳۰ نیویورک کندل ندارد. ساختار کندل‌ها همان است ولی سطح قیمت ممکن است از چند پوینت تا چند صد پوینت با CFD بروکر شما فرق کند. برای نزدیک‌کردنشان بخش «تنظیمات اختیاری» را ببینید.</li></ol></section><div class="steps" id="steps"><section class="step" id="s1"><div class="step-head"><span class="num" data-n="۱" aria-hidden="true">۱</span><h3>حساب GitHub</h3><button class="done" type="button" aria-pressed="false" data-for="s1"><span class="box" aria-hidden="true"></span><span>انجام شد</span></button></div><div class="step-body"><p>اگر حساب GitHub ندارید از <a href="https://github.com/signup" target="_blank" rel="noopener noreferrer">github.com/signup</a> بسازید و وارد شوید. ربات روی سرورهای GitHub اجرا می‌شود؛ بعد از راه‌اندازی هیچ چیزی روی کامپیوتر یا اینترنت شما نمی‌ماند.</p><div class="callout note"><span class="tag">نکته</span><div>طبق صفحه‌ی <a href="https://help.github.com/en/articles/github-and-export-controls" target="_blank" rel="noopener noreferrer">GitHub and export controls</a>، GitHub برای توسعه‌دهندگان ایران مجوز گرفته و خدمات رایگان و پولی‌اش در دسترس است. تحریم‌ها ممکن است تغییر کنند و من ثبت‌نام را از اینجا آزمایش نکرده‌ام.</div></div></div></section><section class="step" id="s2"><div class="step-head"><span class="num" data-n="۲" aria-hidden="true">۲</span><h3>ساخت مخزن عمومی (Public)</h3><button class="done" type="button" aria-pressed="false" data-for="s2"><span class="box" aria-hidden="true"></span><span>انجام شد</span></button></div><div class="step-body"><ol><li>بالای صفحه روی <code dir="ltr">+</code> و بعد <code dir="ltr">New repository</code> بزنید.</li><li>در <code dir="ltr">Repository name</code> بنویسید: <code dir="ltr">ny1m-bot</code></li><li>گزینه‌ی <strong>Public</strong> را انتخاب کنید.</li><li>تیک <code dir="ltr">Add a README file</code> را بزنید.</li><li>روی <code dir="ltr">Create repository</code> بزنید.</li></ol><div class="callout note"><span class="tag">نکته</span><div>چرا Public؟ در مخزن عمومی دقیقه‌ی اجرای GitHub Actions رایگان است؛ مخزن خصوصی ماهانه فقط ۲۰۰۰ دقیقه‌ی رایگان دارد. توکن و شناسه‌ی چت در کد نیستند و در مرحله‌ی ۶ داخل Secrets می‌روند.</div></div><div class="callout warn"><span class="tag">مراقب باشید</span><div>عمومی بودن یعنی کد ربات و ناحیه‌های ثبت‌شده‌ی هر روز (شاخه‌ی <code dir="ltr">bot-state</code>) برای هر کسی که مخزن را پیدا کند دیدنی است. اگر این برایتان مهم است، بخش «اگر GitHub اجرا را متوقف کرد» را هم ببینید: همان کد روی کامپیوتر یا سرور خودتان هم اجرا می‌شود.</div></div></div></section><section class="step" id="s3"><div class="step-head"><span class="num" data-n="۳" aria-hidden="true">۳</span><h3>بارگذاری فایل‌های ربات</h3><button class="done" type="button" aria-pressed="false" data-for="s3"><span class="box" aria-hidden="true"></span><span>انجام شد</span></button></div><div class="step-body"><ol><li>فایل <code dir="ltr">ny1m-bot.zip</code> را از حالت فشرده خارج (Extract) کنید. پوشه‌ای به نام <code dir="ltr">ny1m-bot</code> ساخته می‌شود.</li><li>در صفحه‌ی مخزن: <code dir="ltr">Add file</code> ← <code dir="ltr">Upload files</code>.</li><li>وارد پوشه‌ی <code dir="ltr">ny1m-bot</code> شوید، <strong>همه‌ی محتوای داخل آن</strong> را انتخاب کنید و داخل صفحه‌ی مرورگر بکشید (خودِ پوشه را نکشید). پوشه‌ی <code dir="ltr">.github</code> هم باید جزو آن‌ها باشد.</li><li>صبر کنید همه‌ی فایل‌ها بارگذاری شوند و بعد <code dir="ltr">Commit changes</code> را بزنید.</li></ol><div class="callout note"><span class="tag">نکته</span><div>در مک، پوشه‌هایی که با نقطه شروع می‌شوند مخفی‌اند. در Finder کلیدهای <code dir="ltr">Cmd + Shift + .</code> را بزنید تا <code dir="ltr">.github</code> دیده شود.</div></div><p><strong>بررسی:</strong> در صفحه‌ی اصلی مخزن باید پوشه‌های <code dir="ltr">.github</code>، <code dir="ltr">bot</code>، <code dir="ltr">tests</code>، <code dir="ltr">tools</code> و فایل <code dir="ltr">requirements.txt</code> را ببینید. اگر <code dir="ltr">.github</code> نبود، به بخش «روش دستی برای فایل‌های workflow» در پایین همین صفحه بروید.</p></div></section><section class="step" id="s4"><div class="step-head"><span class="num" data-n="۴" aria-hidden="true">۴</span><h3>ساخت ربات تلگرام</h3><button class="done" type="button" aria-pressed="false" data-for="s4"><span class="box" aria-hidden="true"></span><span>انجام شد</span></button></div><div class="step-body"><ol><li>در تلگرام <code dir="ltr">@BotFather</code> را باز کنید (تیک آبی داشته باشد) و <code dir="ltr">/newbot</code> را بفرستید.</li><li>یک اسم دلخواه بدهید، بعد یک نام کاربری که به <code dir="ltr">bot</code> ختم شود (مثلاً <code dir="ltr">my_ny1m_bot</code>).</li><li>BotFather یک <strong>توکن</strong> می‌دهد، شبیه <code dir="ltr">123456789:AAH…</code>. آن را کپی کنید و جای امن نگه دارید.</li><li>ربات تازه‌ساخته‌تان را باز کنید و دکمه‌ی <code dir="ltr">Start</code> را بزنید (بدون این کار ربات نمی‌تواند به شما پیام بدهد).</li></ol><div class="callout warn"><span class="tag">مراقب باشید</span><div>توکن مثل رمز عبور است. در گروه، کانال یا هیچ جای عمومی نگذارید.</div></div></div></section><section class="step" id="s5"><div class="step-head"><span class="num" data-n="۵" aria-hidden="true">۵</span><h3>پیدا کردن شناسه‌ی چت (Chat ID)</h3><button class="done" type="button" aria-pressed="false" data-for="s5"><span class="box" aria-hidden="true"></span><span>انجام شد</span></button></div><div class="step-body"><p>ساده‌ترین حالت این است که پیام‌ها در چت خصوصی خودتان با ربات بیایند. یکی از دو راه را بروید:</p><ol><li>در تلگرام <code dir="ltr">@userinfobot</code> را باز کنید و <code dir="ltr">Start</code> بزنید. عددی که جلوی <code dir="ltr">Id</code> می‌نویسد شناسه‌ی شماست (مثلاً <code dir="ltr">123456789</code>).</li><li>یا در مرورگر آدرس زیر را باز کنید (به‌جای <code dir="ltr">TOKEN</code> توکن خودتان را بگذارید) و عدد جلوی <code dir="ltr">"chat":{"id":</code> را بردارید:</li></ol><div class="code"><div class="code-bar"><span class="lbl">URL</span><button class="copy" type="button">کپی</button></div><pre dir="ltr"><code>https://api.telegram.org/botTOKEN/getUpdates</code></pre></div><div class="callout note"><span class="tag">نکته</span><div>اگر خروجی <code dir="ltr">"result":[]</code> بود، یک پیام برای ربات بفرستید و صفحه را دوباره باز کنید. برای دریافت پیام‌ها در کانال یا گروه: آن را بسازید، ربات را <strong>Admin</strong> کنید، یک پیام داخلش بفرستید و با همان آدرس شناسه را بردارید. شناسه‌ی کانال با <code dir="ltr">-100</code> شروع می‌شود و علامت منفی هم جزو عدد است.</div></div></div></section><section class="step" id="s6"><div class="step-head"><span class="num" data-n="۶" aria-hidden="true">۶</span><h3>ثبت توکن و شناسه در GitHub (Secrets)</h3><button class="done" type="button" aria-pressed="false" data-for="s6"><span class="box" aria-hidden="true"></span><span>انجام شد</span></button></div><div class="step-body"><ol><li>در مخزن: <code dir="ltr">Settings</code> ← <code dir="ltr">Secrets and variables</code> ← <code dir="ltr">Actions</code>.</li><li><code dir="ltr">New repository secret</code> را بزنید. در <code dir="ltr">Name</code> بنویسید <code dir="ltr">TELEGRAM_BOT_TOKEN</code> و در <code dir="ltr">Secret</code> توکن را بچسبانید ← <code dir="ltr">Add secret</code>.</li><li>دوباره <code dir="ltr">New repository secret</code>: نام <code dir="ltr">TELEGRAM_CHAT_ID</code> و مقدارش شناسه‌ی چت ← <code dir="ltr">Add secret</code>.</li></ol><p>نام‌ها را از اینجا کپی کنید تا غلط نشوند:</p><div class="code"><div class="code-bar"><span class="lbl">نام Secret</span><button class="copy" type="button">کپی</button></div><pre dir="ltr"><code>TELEGRAM_BOT_TOKEN</code></pre></div><div class="code"><div class="code-bar"><span class="lbl">نام Secret</span><button class="copy" type="button">کپی</button></div><pre dir="ltr"><code>TELEGRAM_CHAT_ID</code></pre></div><div class="callout note"><span class="tag">نکته</span><div>نام‌ها باید دقیقاً همین‌ها باشند (حروف بزرگ، بدون فاصله). Secret باید در سطح مخزن (Repository secret) باشد.</div></div><h4>اختیاری: پشتیبان داده برای فارکس و طلا</h4><p>Yahoo منبع اصلی هر ۶ نماد است. اگر کلید رایگان Twelve Data داشته باشید، در صورت خطای پیاپی Yahoo برای EURUSD، GBPUSD و XAUUSD ربات خودکار به آن می‌رود. سقف رایگان ۸ درخواست در دقیقه است و برای شاخص‌ها پشتیبان رایگان وجود ندارد.</p><ol><li>در <a href="https://twelvedata.com" target="_blank" rel="noopener noreferrer">twelvedata.com</a> ثبت‌نام کنید و <code dir="ltr">API key</code> را کپی کنید.</li><li>یک Secret سوم بسازید و کلید را در آن بچسبانید:</li></ol><div class="code"><div class="code-bar"><span class="lbl">نام Secret</span><button class="copy" type="button">کپی</button></div><pre dir="ltr"><code>TWELVEDATA_API_KEY</code></pre></div></div></section><section class="step" id="s7"><div class="step-head"><span class="num" data-n="۷" aria-hidden="true">۷</span><h3>تست اتصال و selftest</h3><button class="done" type="button" aria-pressed="false" data-for="s7"><span class="box" aria-hidden="true"></span><span>انجام شد</span></button></div><div class="step-body"><ol><li>بالای مخزن <code dir="ltr">Actions</code> را بزنید. اگر GitHub دکمه‌ی فعال‌سازی نشان داد (<code dir="ltr">I understand my workflows, go ahead and enable them</code>) آن را بزنید.</li><li>از ستون چپ <code dir="ltr">تست: اتصال تلگرام و selftest</code> را انتخاب کنید ← <code dir="ltr">Run workflow</code> ← دوباره <code dir="ltr">Run workflow</code>.</li><li>بعد از چند دقیقه تیک سبز ظاهر می‌شود.</li></ol><p>در تلگرام باید ۵ پیام ببینید: یک پیام تست و دو نمونه‌ی چارت (یکی فروش، یکی خرید) که هرکدام یک ریپلای «ورود به ناحیه» دارند. این‌ها داده‌ی ساختگی‌اند و فقط ظاهر پیام‌ها را نشان می‌دهند.</p><div class="callout note"><span class="tag">نکته</span><div>اگر ✗ قرمز شد: روی اجرا کلیک کنید، مرحله‌ی قرمز را باز کنید و متن خطا را برای من بفرستید.</div></div></div></section><section class="step" id="s8"><div class="step-head"><span class="num" data-n="۸" aria-hidden="true">۸</span><h3>سنجش تأخیر منابع داده</h3><button class="done" type="button" aria-pressed="false" data-for="s8"><span class="box" aria-hidden="true"></span><span>انجام شد</span></button></div><div class="step-body"><p>این مرحله نشان می‌دهد داده‌ی Yahoo از سرور GitHub چند ثانیه دیر می‌رسد. دوشنبه تا جمعه و داخل بازه‌ی ۰۸:۳۰ تا ۱۱:۳۰ نیویورک اجرا کنید (زمستان ۱۷:۰۰ تا ۲۰:۰۰ تهران، تابستان ۱۶:۰۰ تا ۱۹:۰۰). آخر هفته بازار بسته است و فقط دسترسی بررسی می‌شود.</p><ol><li><code dir="ltr">Actions</code> ← <code dir="ltr">سنجش منابع داده (تأخیر واقعی)</code> ← <code dir="ltr">Run workflow</code> (عدد ۱۲ را نگه دارید؛ حدود ۱۵ دقیقه طول می‌کشد).</li><li>بعد از پایان روی همان اجرا کلیک کنید؛ در صفحه‌ی <code dir="ltr">Summary</code> جدول نتیجه است.</li><li>ستون «ارزیابی» را ببینید: «عالی» یا «قابل قبول» یعنی خوب است و «کند» یعنی تأخیر بیشتر از هدف است.</li></ol><div class="callout note"><span class="tag">نکته</span><div>معیار: «عالی» یعنی میانه‌ی تأخیر ≤ ۸ ثانیه و ۹۰٪ موارد ≤ ۱۵ ثانیه؛ «قابل قبول» یعنی ≤ ۲۰ و ≤ ۴۰ ثانیه. این آزمون هر دقیقه فقط چند درخواست می‌فرستد، مثل خود ربات.</div></div><div class="callout warn"><span class="tag">مراقب باشید</span><div>اگر همه‌ی تیکرها ❌ شدند و خطای <code dir="ltr">HTTP 429</code> یا <code dir="ltr">403</code> دیدید، یعنی Yahoo جلوی سرورهای GitHub را گرفته. نتیجه را برایم بفرستید تا منبع را عوض کنیم.</div></div></div></section><section class="step" id="s9"><div class="step-head"><span class="num" data-n="۹" aria-hidden="true">۹</span><h3>بک‌تست روی داده‌ی واقعی</h3><button class="done" type="button" aria-pressed="false" data-for="s9"><span class="box" aria-hidden="true"></span><span>انجام شد</span></button></div><div class="step-body"><ol><li><code dir="ltr">Actions</code> ← <code dir="ltr">بک‌تست روی داده‌ی واقعی ۱ دقیقه</code> ← <code dir="ltr">Run workflow</code> (روزها: ۲۰).</li><li>بعد از پایان، پایین صفحه‌ی اجرا در بخش <code dir="ltr">Artifacts</code> فایل <code dir="ltr">backtest-result</code> را دانلود کنید.</li><li><code dir="ltr">report.md</code> خلاصه است، <code dir="ltr">zones.csv</code> فهرست همه‌ی ناحیه‌ها و پوشه‌ی <code dir="ltr">charts</code> نمونه‌ی چارت‌ها.</li></ol><p>چند مورد را با چارت خودتان مقایسه کنید: خط آبی باید روی <strong>سطح سویینگِ هانت‌شده</strong> باشد (نه نوک شدو) و خط نارنجی روی سویینگ شکسته‌شده. اگر موردی به نظرتان غلط بود، تاریخ، نماد و ساعتش را برایم بفرستید.</p><div class="callout note"><span class="tag">نکته</span><div>Yahoo فقط حدود ۳۰ روز اخیر را به‌صورت ۱ دقیقه‌ای می‌دهد؛ بیشترین مقدار مجاز ۲۹ روز است. قیمت شاخص‌ها فیوچرز است.</div></div></div></section><section class="step" id="s10"><div class="step-head"><span class="num" data-n="۱۰" aria-hidden="true">۱۰</span><h3>اجرای خودکار روزانه</h3><button class="done" type="button" aria-pressed="false" data-for="s10"><span class="box" aria-hidden="true"></span><span>انجام شد</span></button></div><div class="step-body"><p>کار خاصی لازم نیست. فایل <code dir="ltr">bot.yml</code> ربات را دوشنبه تا جمعه خودکار اجرا می‌کند: حدود ساعت ۱۰:۵۰ UTC (۱۴:۲۰ تهران) شروع می‌شود، تا ۰۸:۲۰ نیویورک می‌خوابد، تاریخچه را می‌گیرد و از ۰۸:۳۰ تا ۱۱:۳۰ رصد می‌کند. ساعت تابستانی و زمستانی آمریکا را خودش حساب می‌کند.</p><p>برای دیدن اجرای زنده: <code dir="ltr">Actions</code> ← <code dir="ltr">ربات ستاپ ۱ دقیقه‌ای (اجرای روزانه)</code> ← اجرای در حال انجام (زرد) ← کلیک ← لاگ.</p><div class="callout note"><span class="tag">نکته</span><div>طبق مستندات GitHub، اجرای زمان‌بندی‌شده می‌تواند دیر شروع شود و در بار زیاد ممکن است حذف شود. برای همین سه زمان‌بندی زودتر از بازه تعریف شده و مرحله‌ی بعد یک trigger پشتیبان می‌سازد.</div></div><div class="callout warn"><span class="tag">مراقب باشید</span><div>اگر ۶۰ روز هیچ فعالیتی در مخزن نباشد، GitHub زمان‌بندی را خاموش می‌کند. ربات هر ۴۰ روز یک commit خالی می‌زند تا این اتفاق نیفتد. اگر ایمیل هشدار گرفتید، در <code dir="ltr">Actions</code> گزینه‌ی <code dir="ltr">Enable workflow</code> را بزنید.</div></div></div></section><section class="step" id="s11"><div class="step-head"><span class="num" data-n="۱۱" aria-hidden="true">۱۱</span><h3>trigger پشتیبان با cron-job.org</h3><button class="done" type="button" aria-pressed="false" data-for="s11"><span class="box" aria-hidden="true"></span><span>انجام شد</span></button></div><div class="step-body"><p>اگر زمان‌بندی GitHub رد شد یا خیلی دیر اجرا شد، این سرویس رایگان ربات را صدا می‌زند. اگر دو ربات هم‌زمان شروع شوند فقط یکی کار می‌کند؛ دومی منتظر می‌ماند و بعد از پایان بازه بی‌سروصدا خارج می‌شود. این مرحله توصیه می‌شود ولی اجباری نیست.</p><h4>الف) ساخت توکن GitHub</h4><ol><li>در GitHub: عکس پروفایل ← <code dir="ltr">Settings</code> ← پایین ستون چپ <code dir="ltr">Developer settings</code> ← <code dir="ltr">Personal access tokens</code> ← <code dir="ltr">Fine-grained tokens</code> ← <code dir="ltr">Generate new token</code>.</li><li><code dir="ltr">Token name</code>: <code dir="ltr">cronjob-ny1m</code> و <code dir="ltr">Expiration</code>: یک سال (یادداشت کنید سال بعد تمدید شود).</li><li><code dir="ltr">Repository access</code> ← <code dir="ltr">Only select repositories</code> ← <code dir="ltr">ny1m-bot</code>.</li><li><code dir="ltr">Permissions</code> ← <code dir="ltr">Repository permissions</code> ← <code dir="ltr">Actions</code> ← <code dir="ltr">Read and write</code>.</li><li><code dir="ltr">Generate token</code> و توکنی را که با <code dir="ltr">github_pat_</code> شروع می‌شود کپی کنید (فقط یک‌بار نشان داده می‌شود).</li></ol><h4>ب) ساخت job در cron-job.org</h4><ol><li>در <a href="https://cron-job.org" target="_blank" rel="noopener noreferrer">cron-job.org</a> ثبت‌نام کنید و <code dir="ltr">Create cronjob</code> را بزنید. <code dir="ltr">Title</code>: <code dir="ltr">ny1m start</code></li><li>در <code dir="ltr">URL</code> آدرس زیر را بگذارید و <code dir="ltr">USERNAME</code> را با نام کاربری GitHub خودتان عوض کنید:</li></ol><div class="code"><div class="code-bar"><span class="lbl">URL</span><button class="copy" type="button">کپی</button></div><pre dir="ltr"><code>https://api.github.com/repos/USERNAME/ny1m-bot/actions/workflows/bot.yml/dispatches</code></pre></div><ol><li><code dir="ltr">Execution schedule</code> ← <code dir="ltr">User-defined</code>: منطقه‌ی زمانی <code dir="ltr">America/New_York</code>، روزها دوشنبه تا جمعه، ساعت‌ها <code dir="ltr">7</code> و <code dir="ltr">8</code>، دقیقه <code dir="ltr">0</code>.</li><li>تب <code dir="ltr">Advanced</code>: <code dir="ltr">Request method</code> را <code dir="ltr">POST</code> بگذارید و این چهار هدر را اضافه کنید (نام و مقدار جدا):</li></ol><div class="code"><div class="code-bar"><span class="lbl">هدرها</span><button class="copy" type="button">کپی</button></div><pre dir="ltr"><code>Accept: application/vnd.github+json
+Authorization: Bearer github_pat_YOUR_TOKEN
+X-GitHub-Api-Version: 2022-11-28
+Content-Type: application/json</code></pre></div><p>در <code dir="ltr">Request body</code> این را بگذارید:</p><div class="code"><div class="code-bar"><span class="lbl">JSON</span><button class="copy" type="button">کپی</button></div><pre dir="ltr"><code>{"ref":"main"}</code></pre></div><p><code dir="ltr">Save</code> و بعد <code dir="ltr">Test run</code> را بزنید. پاسخ درست <code dir="ltr">204</code> است و در <code dir="ltr">Actions</code> یک اجرای تازه با برچسب <code dir="ltr">workflow_dispatch</code> پیدا می‌شود.</p><div class="callout note"><span class="tag">نکته</span><div>اگر نام مخزن یا شاخه‌ی پیش‌فرض‌تان فرق دارد (مثلاً <code dir="ltr">master</code>)، آن را در آدرس و بدنه عوض کنید. رابط سایت ممکن است کمی فرق کند؛ معادل هر گزینه را انتخاب کنید. اگر ثبت‌نام در cron-job.org ممکن نبود این مرحله را رد کنید: سه زمان‌بندی خود GitHub هم کار می‌کند و فقط احتمال نادرِ رد شدن را پوشش نمی‌دهد.</div></div></div></section></div><section class="section" id="daily"><h2>هر روز چه می‌بینید</h2><ul><li>۰۸:۳۰ نیویورک (زمستان ۱۷:۰۰ تهران، تابستان ۱۶:۰۰): پیام بی‌صدای «ربات روشن است».</li><li>هر ناحیه: یک عکس چارت با کپشن. هدف ۱۰ تا ۲۰ ثانیه بعد از کلوز کندل است؛ عدد واقعی را مرحله‌ی ۸ و پیام پایان بازه نشان می‌دهند.</li><li>اولین رسیدن قیمت به لبه‌ی ورود (حتی داخل کندل در حال شکل‌گیری): ریپلای کوتاه روی همان پیام ناحیه، فقط یک‌بار.</li><li>۱۱:۳۰: پیام بی‌صدای پایان با تعداد ناحیه‌ها و آمار تأخیر همان روز.</li><li>اگر داده قطع شود: پیام «هشدار: قطع داده»؛ وقتی برگشت، یک پیام بی‌صدا.</li></ul></section><section class="section" id="options"><h2>تنظیمات اختیاری</h2><p>فایل <code dir="ltr">bot/config.py</code> را در GitHub باز کنید، روی مداد (Edit) بزنید، مقدار را عوض کنید و <code dir="ltr">Commit changes</code> را بزنید. از اجرای بعدی اعمال می‌شود.</p><div class="settings"><div class="set-row"><div class="set-head"><code dir="ltr">PRICE_OFFSET</code><span class="pill">پیش‌فرض: <bdi>۰ برای همه</bdi></span></div><p>اختلاف ثابت برای نزدیک کردن قیمت فیوچرز به CFD بروکر، مثلاً <code dir="ltr">"NAS100": -180.0</code></p></div><div class="set-row"><div class="set-head"><code dir="ltr">ALLOW_HUNT_BEFORE_WINDOW</code><span class="pill">پیش‌فرض: <bdi>True</bdi></span></div><p>هانت قبل از ۰۸:۳۰ مجاز باشد؟ (کلوز و شیفت همیشه باید داخل بازه باشند)</p></div><div class="set-row"><div class="set-head"><code dir="ltr">LOOKBACK_TRADING_DAYS</code><span class="pill">پیش‌فرض: <bdi>5</bdi></span></div><p>سقف یا کفِ هانت‌شده تا چند روز معاملاتی قبل معتبر باشد</p></div><div class="set-row"><div class="set-head"><code dir="ltr">CHART_CANDLES</code><span class="pill">پیش‌فرض: <bdi>80</bdi></span></div><p>تعداد کندل چارت (۶۰ تا ۹۰)</p></div><div class="set-row"><div class="set-head"><code dir="ltr">END_SILENT</code><span class="pill">پیش‌فرض: <bdi>True</bdi></span></div><p>پیام پایان بازه بی‌صدا باشد؟</p></div></div><p>برای خاموش کردن ربات: <code dir="ltr">Actions</code> ← <code dir="ltr">ربات ستاپ ۱ دقیقه‌ای (اجرای روزانه)</code> ← منوی <code dir="ltr">…</code> ← <code dir="ltr">Disable workflow</code>.</p></section><section class="section" id="trouble"><h2>رفع مشکل</h2><details class="qa"><summary>پیامی نیامد</summary><div><code dir="ltr">Actions</code> را باز کنید و اجرای امروز را ببینید. اگر خطای «TELEGRAM_BOT_TOKEN و TELEGRAM_CHAT_ID تنظیم نشده‌اند» بود، نام Secretها را با مرحله‌ی ۶ مقایسه کنید.</div></details><details class="qa"><summary>خطای Unauthorized یا chat not found</summary><div>Unauthorized یعنی توکن غلط یا ناقص کپی شده. chat not found یعنی <code dir="ltr">Start</code> را در ربات نزده‌اید، شناسه غلط است، یا ربات در کانال Admin نیست.</div></details><details class="qa"><summary>اجرای روزانه شروع نشد یا دیر شروع شد</summary><div>در <code dir="ltr">Actions</code> ببینید workflow فعال است یا نه. GitHub ممکن است زمان‌بندی را دیر اجرا کند؛ trigger پشتیبان (مرحله‌ی ۱۱) برای همین است. می‌توانید با <code dir="ltr">Run workflow</code> دستی هم اجرا کنید: اگر بازه شروع شده باشد، ربات وسط بازه وارد می‌شود و ناحیه‌های قبلی را با برچسب «ارسال با تأخیر» می‌فرستد.</div></details><details class="qa"><summary>قیمت‌ها با چارت بروکرم فرق دارد</summary><div>برای NAS100، US30 و SPX500 داده‌ی فیوچرز (<code dir="ltr">NQ=F</code>، <code dir="ltr">YM=F</code>، <code dir="ltr">ES=F</code>) است و با CFD بروکر اختلاف دارد؛ ساختار کندل‌ها یکی است. اگر خواستید <code dir="ltr">PRICE_OFFSET</code> را تنظیم کنید.</div></details><details class="qa"><summary>هشدار قطع داده در تعطیلات آمریکا</summary><div>در روزهای تعطیل بازار آمریکا (مثل تشکر و کریسمس) کندل‌ها کم یا قطع می‌شوند و هشدار طبیعی است.</div></details><details class="qa"><summary>خطای 429 از Yahoo</summary><div>یعنی Yahoo درخواست‌ها را محدود کرده. ربات خودکار صبر می‌کند و دوباره تلاش می‌کند و برای فارکس و طلا (اگر کلید Twelve Data دارید) به پشتیبان می‌رود. اگر مدام تکرار شد، نتیجه‌ی مرحله‌ی ۸ را برایم بفرستید.</div></details><details class="qa"><summary>در لاگ نوشته state push failed یا Permission denied</summary><div>ربات بدون ذخیره‌ی وضعیت هم کار می‌کند، ولی بعد از ری‌استارت ممکن است ناحیه‌ی قبلی دوباره ارسال شود. در مخزن: <code dir="ltr">Settings</code> ← <code dir="ltr">Actions</code> ← <code dir="ltr">General</code> ← پایین صفحه <code dir="ltr">Workflow permissions</code> ← <code dir="ltr">Read and write permissions</code> ← <code dir="ltr">Save</code>.</div></details><details class="qa"><summary>GitHub هشدار داد یا اجرا را غیرفعال کرد</summary><div>پیام GitHub را بخوانید. اگر به شرایط استفاده از Actions مربوط بود، از بخش «اگر GitHub اجرا را متوقف کرد» استفاده کنید.</div></details></section><section class="section" id="planb"><h2>اگر GitHub اجرا را متوقف کرد</h2><p>همین کد روی هر کامپیوتر یا سرور دیگری هم اجرا می‌شود؛ فقط باید Python 3.12 داشته باشد و حداقل از ساعت ۰۸:۲۰ نیویورک روشن و آنلاین باشد. ربات خودش منتظر شروع بازه می‌ماند و بعد از ۱۱:۳۰ خارج می‌شود. هر روز یک‌بار اجرایش کنید، یا آن را با Task Scheduler (ویندوز) یا cron (مک و لینوکس) زمان‌بندی کنید.</p><h4>مک و لینوکس</h4><div class="code"><div class="code-bar"><span class="lbl">Terminal</span><button class="copy" type="button">کپی</button></div><pre dir="ltr"><code>pip install -r requirements.txt
+export TELEGRAM_BOT_TOKEN="YOUR_TOKEN"
+export TELEGRAM_CHAT_ID="YOUR_CHAT_ID"
+python -u -m bot.runner</code></pre></div><h4>ویندوز (PowerShell)</h4><div class="code"><div class="code-bar"><span class="lbl">PowerShell</span><button class="copy" type="button">کپی</button></div><pre dir="ltr"><code>pip install -r requirements.txt
+$env:TELEGRAM_BOT_TOKEN="YOUR_TOKEN"
+$env:TELEGRAM_CHAT_ID="YOUR_CHAT_ID"
+python -u -m bot.runner</code></pre></div><div class="callout note"><span class="tag">نکته</span><div>این حالت به روشن بودن کامپیوتر و اینترنت شما وابسته است؛ فقط برنامه‌ی جایگزین است.</div></div></section><section class="section" id="report"><h2>گزارش منابع داده و تأخیر</h2><p>این گزارش فقط چیزهایی را «سنجیده شد» می‌نامد که واقعاً اجرا شده‌اند. بقیه صریحاً «سنجیده نشد» یا «تأیید نشد» هستند.</p><h4>آنچه سنجیده شد و آنچه نشد</h4><div class="facts"><div class="fact"><span class="status ok">سنجیده شد</span><h4>ارزیابی کامل ۷۰۰۰ تا ۷۵۰۰ کندل برای یک نماد (فروش و خرید)</h4><div class="res">حدود ۱۰ تا ۳۰ میلی‌ثانیه</div><div class="meta">selftest در محیط من؛ در آخرین اجرا ۱۱ و ۲۲ میلی‌ثانیه</div></div><div class="fact"><span class="status ok">سنجیده شد</span><h4>ساخت یک چارت</h4><div class="res">۰.۰۸ تا ۰.۱۹ ثانیه</div><div class="meta">همان‌جا</div></div><div class="fact"><span class="status ok">سنجیده شد</span><h4>۴۰ بررسی selftest: الگوی فروش، خرید (آینه‌ی فروش)، نوع ۲، همه‌ی حالت‌های رد شدن و ۱۵۰ سری تصادفی در برابر پیاده‌سازی مرجع</h4><div class="res">۴۰ از ۴۰ موفق</div><div class="meta">tests/selftest.py</div></div><div class="fact"><span class="status ok">سنجیده شد</span><h4>بازپخش یک روز کامل: ۶ نماد، ۲۸ ناحیه، تأخیر شبیه‌سازی‌شده‌ی ۴ ثانیه برای منبع داده</h4><div class="res">پیام ناحیه ۴ تا ۶ ثانیه بعد از کلوز؛ هر ۲۸ ناحیه برابر نتیجه‌ی مرجع؛ بدون پیام تکراری؛ ری‌استارت و قطع ۶ دقیقه‌ای داده درست مدیریت شد</div><div class="meta">tests/replay_test.py با ساعت و منبع ساختگی (زمان واقعی ارسال تلگرام در آن نیست)</div></div><div class="fact"><span class="status no">سنجیده نشد</span><h4>تأخیر واقعی Yahoo و ارسال تلگرام از سرور GitHub</h4><div class="res">سنجیده نشد</div><div class="meta">شبکه‌ی محیط من اتصال به Yahoo و تلگرام را رد کرد. مرحله‌ی ۸ و پیام پایان بازه‌ی هر روز آن را از خود GitHub اندازه می‌گیرند</div></div><div class="fact"><span class="status no">سنجیده نشد</span><h4>بک‌تست روی داده‌ی واقعی</h4><div class="res">اجرا نشد</div><div class="meta">ابزارش آماده و روی داده‌ی ساختگی آزموده شده، ولی به داده‌ی Yahoo دسترسی نداشتم. مرحله‌ی ۹ آن را اجرا می‌کند</div></div></div><h4>منابع داده‌ای که بررسی کردم</h4><div class="facts"><div class="fact"><span class="status role-main">اصلی</span><h4>Yahoo Finance (chart API)</h4><dl><dt>هزینه</dt><dd>رایگان، بدون کلید و حساب</dd><dt>پوشش ۶ نماد</dt><dd>همه‌ی ۶ نماد. شاخص‌ها فقط فیوچرز (<code dir="ltr">NQ=F</code>، <code dir="ltr">YM=F</code>، <code dir="ltr">ES=F</code>)؛ فارکس و طلا اسپات (<code dir="ltr">EURUSD=X</code>، <code dir="ltr">GBPUSD=X</code>، <code dir="ltr">XAUUSD=X</code> با جایگزین <code dir="ltr">GC=F</code>)</dd><dt>وضعیت و محدودیت</dt><dd>API غیررسمی و بدون تعهد. برای ۱ دقیقه‌ای حدود ۷ روز در هر درخواست و ۳۰ روز در کل. در یک گزارش yfinance کاربری نوشته مستندات سقف ۳۶۰ درخواست در ساعت را ذکر می‌کند (تأیید نشد) و همان گزارش از خطای 429 خبر می‌دهد. ربات حدود ۱ تا ۳ درخواست برای هر نماد در دقیقه می‌فرستد (۶ تا ۲۰ در دقیقه، ۳۶۰ تا ۱۲۰۰ در ساعت). مسدود بودن IP سرورهای GitHub نه تأیید شد نه رد؛ مرحله‌ی ۸ همین را روشن می‌کند.</dd></dl></div><div class="fact"><span class="status role-backup">پشتیبان فقط فارکس و طلا</span><h4>Twelve Data (طرح رایگان)</h4><dl><dt>هزینه</dt><dd>کلید رایگان</dd><dt>پوشش ۶ نماد</dt><dd>طبق صفحه‌ی قیمت‌گذاری: real-time برای سهام آمریکا، فارکس و کریپتو. شاخص و کالا (طلا) ذکر نشده است</dd><dt>وضعیت و محدودیت</dt><dd>۸ اعتبار در دقیقه و سقف ۸۰۰ در روز؛ وب‌سوکت فقط ۸ اعتبار آزمایشی. رایگان بودن داده‌ی ۱ دقیقه‌ای و در دسترس بودن XAU/USD در طرح رایگان تأیید نشد.</dd></dl></div><div class="fact"><span class="status role-off">استفاده نشد</span><h4>Finnhub (طرح رایگان)</h4><dl><dt>هزینه</dt><dd>کلید رایگان</dd><dt>پوشش ۶ نماد</dt><dd>—</dd><dt>وضعیت و محدودیت</dt><dd>خود Finnhub در یک issue نوشته طرح رایگان هرگز به <code dir="ltr">/stock/candle</code> دسترسی نداشته. دسترسی به کندل فارکس را تأیید نکردم.</dd></dl></div><div class="fact"><span class="status role-off">استفاده نشد</span><h4>OANDA و Capital.com</h4><dl><dt>هزینه</dt><dd>حساب بروکر</dd><dt>پوشش ۶ نماد</dt><dd>—</dd><dt>وضعیت و محدودیت</dt><dd>طبق شرط شما (حساب غیرقابل‌ثبت‌نام از ایران) کنار گذاشته شدند.</dd></dl></div><div class="fact"><span class="status role-off">استفاده نشد</span><h4>Dukascopy</h4><dl><dt>هزینه</dt><dd>رایگان</dd><dt>پوشش ۶ نماد</dt><dd>—</dd><dt>وضعیت و محدودیت</dt><dd>تست نشد. طبق دانسته‌ی من برای بک‌تست مناسب است، ولی تأخیر زنده‌ی آن را نسنجیده‌ام.</dd></dl></div><div class="fact"><span class="status role-off">استفاده نشد</span><h4>TradingView</h4><dl><dt>هزینه</dt><dd>—</dd><dt>پوشش ۶ نماد</dt><dd>—</dd><dt>وضعیت و محدودیت</dt><dd>API رسمی رایگان ندارد و طبق دانسته‌ی من خواندن غیررسمی داده‌اش با شرایط استفاده‌ی آن‌ها نمی‌خواند.</dd></dl></div></div><h4>تصمیم</h4><ul><li><strong>انتخاب فعلی:</strong> منبع اصلی Yahoo برای هر ۶ نماد و پشتیبان Twelve Data فقط برای فارکس و طلا. برای شاخص‌ها پشتیبان رایگانِ قابل‌اعتماد پیدا نکردم.</li><li><strong>قاعده‌ی قبولی بعد از مرحله‌ی ۸:</strong> میانه‌ی تأخیر دیده‌شدن کندل ≤ ۸ ثانیه و ۹۰٪ موارد ≤ ۱۵ ثانیه یعنی «عالی»؛ تا ۲۰ و ۴۰ ثانیه «قابل قبول»؛ بیشتر از آن هدف ۱۰ تا ۲۰ ثانیه برای پیام ناحیه برآورده نمی‌شود و باید منبع عوض شود.</li><li><strong>عدد واقعی از کجا می‌آید:</strong> (۱) workflow سنجش، (۲) پیام پایان بازه‌ی هر روز که میانه، ۹۰٪ و بیشینه‌ی تأخیر داده و تأخیر پیام ناحیه را خودکار گزارش می‌کند.</li></ul><h4>ریسک‌هایی که باید بدانید</h4><ul><li><strong>شرایط استفاده‌ی GitHub:</strong> اجرای رایگان روی اجراکننده‌های GitHub باید به پروژه‌ی نرم‌افزاری مخزن مربوط باشد؛ ربات رصد بازار در منطقه‌ی خاکستری است (<a href="https://docs.github.com/en/site-policy/github-terms/github-terms-for-additional-products-and-features" target="_blank" rel="noopener noreferrer">متن شرایط</a>). برنامه‌ی جایگزین در راهنما هست.</li><li><strong>مخزن عمومی:</strong> کد و ناحیه‌های ثبت‌شده‌ی هر روز برای هر کسی که مخزن را پیدا کند دیدنی است؛ توکن و شناسه‌ی چت نه.</li><li><strong>Yahoo ممکن است محدود یا مسدود کند</strong> (۴۲۹ یا ۴۰۳). ربات صبر می‌کند و پیام «قطع داده» می‌فرستد؛ برای فارکس و طلا در صورت داشتن کلید به Twelve Data می‌رود، برای شاخص‌ها پشتیبانی ندارد.</li><li><strong>کیفیت <code dir="ltr">XAUUSD=X</code> در Yahoo تأیید نشد.</strong> اگر کم یا کهنه بود ربات خودکار <code dir="ltr">GC=F</code> (فیوچرز طلا) را انتخاب می‌کند و قیمت چند دلار بالاتر از اسپات خواهد بود.</li><li><strong>شاخص‌ها فیوچرز هستند</strong>، چون شاخص نقدی قبل از ۰۹:۳۰ نیویورک کندل ندارد. ساختار یکی است ولی سطح قیمت با CFD بروکر فرق می‌کند.</li><li><strong>زمان‌بندی GitHub:</strong> طبق مستندات می‌تواند دیر شود و در بار زیاد حذف شود. با شروع زودهنگام، سه زمان‌بندی و trigger پشتیبان پوشش داده شده، ولی صددرصد تضمین نیست.</li><li><strong>تعطیلات آمریکا:</strong> کندل‌ها کم یا قطع می‌شوند و هشدار «قطع داده» طبیعی است.</li></ul><h4>منبع‌ها</h4><ul class="refs"><li><a href="https://docs.github.com/en/site-policy/github-terms/github-terms-for-additional-products-and-features" target="_blank" rel="noopener noreferrer">شرایط GitHub برای Actions (بخش Actions)</a></li><li><a href="https://docs.github.com/en/actions/reference/workflows-and-actions/events-that-trigger-workflows" target="_blank" rel="noopener noreferrer">مستندات GitHub: رویداد schedule و workflow_dispatch</a></li><li><a href="https://docs.github.com/en/actions/reference/usage-limits-billing-and-administration" target="_blank" rel="noopener noreferrer">GitHub: رایگان بودن Actions در مخزن عمومی</a></li><li><a href="https://help.github.com/en/articles/github-and-export-controls" target="_blank" rel="noopener noreferrer">GitHub and export controls (ایران)</a></li><li><a href="https://twelvedata.com/pricing" target="_blank" rel="noopener noreferrer">Twelve Data: قیمت‌گذاری</a></li><li><a href="https://github.com/ranaroussi/yfinance/issues/2128" target="_blank" rel="noopener noreferrer">گزارش yfinance درباره‌ی 429 (issue 2128)</a></li><li><a href="https://github.com/finnhubio/Finnhub-API/issues/546" target="_blank" rel="noopener noreferrer">Finnhub: پاسخ درباره‌ی دسترسی به کندل در طرح رایگان (issue 546)</a></li><li><a href="https://runhooks.app/blog/github-actions-scheduled-workflows-unreliable/" target="_blank" rel="noopener noreferrer">مقاله درباره‌ی تأخیر و حذف اجرای زمان‌بندی‌شده (۵ تا ۲۰ دقیقه، به‌گفته‌ی نویسنده)</a></li></ul></section><section class="section" id="manual"><h2>روش دستی برای فایل‌های workflow</h2><p>اگر بعد از بارگذاری، پوشه‌ی <code dir="ltr">.github</code> در مخزن نبود، هر چهار فایل را این‌طور بسازید:</p><ol><li>در مخزن: <code dir="ltr">Add file</code> ← <code dir="ltr">Create new file</code>.</li><li>در کادر نام فایل، مسیر را تایپ کنید، مثلاً <code dir="ltr">.github/workflows/bot.yml</code> (با تایپ <code dir="ltr">/</code> پوشه‌ها خودکار ساخته می‌شوند).</li><li>محتوای همان فایل را از پایین کپی و در کادر بزرگ بچسبانید، بعد <code dir="ltr">Commit changes</code>.</li><li>همین کار را برای <code dir="ltr">test.yml</code>، <code dir="ltr">probe.yml</code> و <code dir="ltr">backtest.yml</code> تکرار کنید.</li></ol><div class="callout note"><span class="tag">نکته</span><div>همین چهار فایل داخل zip هم در پوشه‌ی <code dir="ltr">workflow-files</code> هست و می‌توانید از آنجا باز کنید و کپی کنید.</div></div><div class="code"><div class="code-bar"><span class="lbl">.github/workflows/bot.yml</span><button class="copy" type="button">کپی</button></div><pre dir="ltr"><code>name: "ربات ستاپ ۱ دقیقه‌ای (اجرای روزانه)"
+
+# ساعت‌ها UTC هستند. ربات خودش زمان نیویورک (با ساعت تابستانی/زمستانی) را حساب می‌کند.
+# ۱۰:۵۰ UTC یعنی ۰۵:۵۰ نیویورک در زمستان و ۰۶:۵۰ در تابستان؛ مدتی زودتر از ۰۸:۳۰ تا تأخیر احتمالی GitHub جبران شود.
+# سه زمان‌بندی یکی‌اند و فقط یک ربات هم‌زمان اجرا می‌شود (concurrency)؛ بقیه پشتیبان‌اند.
+on:
+  schedule:
+    - cron: "50 10 * * 1-5"
+    - cron: "50 11 * * 1-5"
+    - cron: "10 12 * * 1-5"
+  workflow_dispatch:
+
+concurrency:
+  group: ny-setup-bot
+  cancel-in-progress: false
+
+permissions:
+  contents: write
+
+jobs:
+  bot:
+    runs-on: ubuntu-latest
+    timeout-minutes: 350
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+
+      - name: نصب کتابخانه‌ها
+        run: pip install -r requirements.txt
+
+      - name: آماده‌سازی شاخه‌ی ذخیره‌ی وضعیت
+        run: bash tools/prepare_state.sh
+
+      - name: اجرای ربات
+        env:
+          TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+          TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
+          TWELVEDATA_API_KEY: ${{ secrets.TWELVEDATA_API_KEY }}
+        run: python -u -m bot.runner
+
+      - name: جلوگیری از غیرفعال‌شدن زمان‌بندی (هر ~۴۰ روز یک commit خالی)
+        if: always()
+        run: |
+          branch="${{ github.event.repository.default_branch }}"
+          last=$(git log -1 --format=%ct HEAD)
+          now=$(date +%s)
+          if [ $(( (now - last) / 86400 )) -ge 40 ]; then
+            git commit --allow-empty -qm "keepalive" &amp;&amp; git push origin "HEAD:${branch}" || true
+          fi</code></pre></div><div class="code"><div class="code-bar"><span class="lbl">.github/workflows/test.yml</span><button class="copy" type="button">کپی</button></div><pre dir="ltr"><code>name: "تست: اتصال تلگرام و selftest"
+
+on:
+  workflow_dispatch:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+      - run: pip install -r requirements.txt
+
+      - name: selftest آفلاین (الگوهای فروش/خرید/نوع ۲، همه‌ی موارد رد شدن، کارایی)
+        run: python tests/selftest.py
+
+      - name: تست یکپارچه (بازپخش یک روز کامل با ساعت و داده‌ی ساختگی)
+        run: python tests/replay_test.py | tail -40
+
+      - name: ارسال پیام آزمایشی و نمونه‌ی چارت به تلگرام
+        env:
+          TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+          TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
+        run: python -m bot.runner --test</code></pre></div><div class="code"><div class="code-bar"><span class="lbl">.github/workflows/probe.yml</span><button class="copy" type="button">کپی</button></div><pre dir="ltr"><code>name: "سنجش منابع داده (تأخیر واقعی)"
+
+on:
+  workflow_dispatch:
+    inputs:
+      minutes:
+        description: "چند دقیقه نمونه‌گیری زنده (بهتر است دوشنبه تا جمعه و بین ۰۸:۳۰ تا ۱۱:۳۰ نیویورک اجرا شود)"
+        default: "12"
+
+jobs:
+  probe:
+    runs-on: ubuntu-latest
+    timeout-minutes: 40
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+      - run: pip install -r requirements.txt
+      - name: سنجش
+        env:
+          TWELVEDATA_API_KEY: ${{ secrets.TWELVEDATA_API_KEY }}
+        run: python tools/probe.py --minutes "${{ inputs.minutes }}" --interval 3
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: probe-report
+          path: probe_report.md</code></pre></div><div class="code"><div class="code-bar"><span class="lbl">.github/workflows/backtest.yml</span><button class="copy" type="button">کپی</button></div><pre dir="ltr"><code>name: "بک‌تست روی داده‌ی واقعی ۱ دقیقه"
+
+on:
+  workflow_dispatch:
+    inputs:
+      days:
+        description: "چند روز گذشته (حداکثر ۲۹؛ Yahoo فقط ۳۰ روز اخیر ۱ دقیقه‌ای می‌دهد)"
+        default: "20"
+
+jobs:
+  backtest:
+    runs-on: ubuntu-latest
+    timeout-minutes: 40
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+      - run: pip install -r requirements.txt
+      - name: بک‌تست
+        run: python tools/backtest.py --days "${{ inputs.days }}" --charts 15
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: backtest-result
+          path: backtest_out</code></pre></div></section><p class="foot">این ربات فقط هشدار می‌فرستد و معامله نمی‌کند؛ تصمیم معامله با خود شماست.</p></main></div></div>
+<script>
+(function(){
+  try{document.documentElement.lang='fa';document.documentElement.dir='rtl'}catch(e){}
+  try{var l=document.createElement('link');l.rel='stylesheet';
+    l.href='https://fonts.googleapis.com/css2?family=Vazirmatn:wght@400;500;700;800&family=JetBrains+Mono:wght@400;500&display=swap';
+    document.head.appendChild(l)}catch(e){}
+  var FA='۰۱۲۳۴۵۶۷۸۹';
+  function fa(n){return String(n).replace(/\d/g,function(d){return FA.charAt(+d)})}
+  var KEY='ny1m-guide-v1', mem={};
+  try{var raw=window.localStorage.getItem(KEY);if(raw){var o=JSON.parse(raw);if(o&&typeof o==='object')mem=o}}catch(e){}
+  function save(){try{window.localStorage.setItem(KEY,JSON.stringify(mem))}catch(e){}}
+  var steps=[].slice.call(document.querySelectorAll('.step')), total=steps.length;
+  function render(){
+    var n=0;
+    steps.forEach(function(s){
+      var on=!!mem[s.id]; if(on)n++;
+      s.classList.toggle('is-done',on);
+      var b=s.querySelector('.done'); if(b)b.setAttribute('aria-pressed',on?'true':'false');
+      var num=s.querySelector('.num'); if(num)num.textContent=on?'✓':num.getAttribute('data-n');
+      var t=document.querySelector('[data-toc="'+s.id+'"]');
+      if(t){t.classList.toggle('is-done',on);var d=t.querySelector('.dot');if(d)d.textContent=on?'✓':d.getAttribute('data-n')}
+    });
+    var c=document.getElementById('pcount'); if(c)c.textContent=fa(n)+' از '+fa(total)+' مرحله انجام شد';
+    var bar=document.getElementById('pbar'); if(bar)bar.style.width=(100*n/total)+'%';
+    var ts=document.getElementById('toc-sum'); if(ts)ts.textContent='فهرست مراحل ('+fa(n)+' از '+fa(total)+')';
+  }
+  document.querySelectorAll('.done').forEach(function(b){
+    b.addEventListener('click',function(){var id=b.getAttribute('data-for');mem[id]=!mem[id];if(!mem[id])delete mem[id];save();render()});
+  });
+  var rb=document.getElementById('reset'), armed=false, tm=0;
+  if(rb)rb.addEventListener('click',function(){
+    if(!armed){armed=true;rb.textContent='برای پاک‌کردن، دوباره بزنید';tm=setTimeout(function(){armed=false;rb.textContent='پاک‌کردن علامت‌ها'},3000);return}
+    clearTimeout(tm);armed=false;rb.textContent='پاک‌کردن علامت‌ها';mem={};save();render();
+  });
+  document.querySelectorAll('.code').forEach(function(box){
+    var btn=box.querySelector('.copy'), pre=box.querySelector('pre');
+    btn.addEventListener('click',function(){
+      var text=pre.textContent;
+      function flash(msg){btn.textContent=msg;btn.classList.add('ok');setTimeout(function(){btn.textContent='کپی';btn.classList.remove('ok')},1800)}
+      function pick(){
+        try{var r=document.createRange();r.selectNodeContents(pre);var s=window.getSelection();s.removeAllRanges();s.addRange(r);
+          var ok=false;try{ok=document.execCommand('copy')}catch(e){}
+          flash(ok?'کپی شد':'انتخاب شد؛ Ctrl+C بزنید')}catch(e){flash('انتخاب کنید و Ctrl+C بزنید')}
+      }
+      if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(text).then(function(){flash('کپی شد')},pick)}else{pick()}
+    });
+  });
+  var toc=document.getElementById('toc'), mq=window.matchMedia?window.matchMedia('(min-width: 980px)'):null;
+  function sync(){if(toc&&mq)toc.open=mq.matches}
+  sync(); if(mq){if(mq.addEventListener)mq.addEventListener('change',sync);else if(mq.addListener)mq.addListener(sync)}
+  document.addEventListener('click',function(e){
+    var a=e.target.closest?e.target.closest('a[href^="#"]'):null; if(!a)return;
+    var el=document.getElementById(a.getAttribute('href').slice(1)); if(!el)return;
+    e.preventDefault(); el.scrollIntoView({behavior:'smooth',block:'start'});
+    if(mq&&!mq.matches&&toc&&toc.contains(a))toc.open=false;
+  });
+  render();
+})();
+</script>
+</body></html>

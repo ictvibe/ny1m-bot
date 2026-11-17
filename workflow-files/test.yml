@@ -1,0 +1,28 @@
+name: "تست: اتصال تلگرام و selftest"
+
+on:
+  workflow_dispatch:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+      - run: pip install -r requirements.txt
+
+      - name: selftest آفلاین (الگوهای فروش/خرید/نوع ۲، همه‌ی موارد رد شدن، کارایی)
+        run: python tests/selftest.py
+
+      - name: تست یکپارچه (بازپخش یک روز کامل با ساعت و داده‌ی ساختگی)
+        run: python tests/replay_test.py | tail -40
+
+      - name: ارسال پیام آزمایشی و نمونه‌ی چارت به تلگرام
+        env:
+          TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+          TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
+        run: python -m bot.runner --test

@@ -1,0 +1,29 @@
+name: "سنجش منابع داده (تأخیر واقعی)"
+
+on:
+  workflow_dispatch:
+    inputs:
+      minutes:
+        description: "چند دقیقه نمونه‌گیری زنده (بهتر است دوشنبه تا جمعه و بین ۰۸:۳۰ تا ۱۱:۳۰ نیویورک اجرا شود)"
+        default: "12"
+
+jobs:
+  probe:
+    runs-on: ubuntu-latest
+    timeout-minutes: 40
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+      - run: pip install -r requirements.txt
+      - name: سنجش
+        env:
+          TWELVEDATA_API_KEY: ${{ secrets.TWELVEDATA_API_KEY }}
+        run: python tools/probe.py --minutes "${{ inputs.minutes }}" --interval 3
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: probe-report
+          path: probe_report.md

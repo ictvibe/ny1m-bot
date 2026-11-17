@@ -1,0 +1,53 @@
+name: "ربات ستاپ ۱ دقیقه‌ای (اجرای روزانه)"
+
+# ساعت‌ها UTC هستند. ربات خودش زمان نیویورک (با ساعت تابستانی/زمستانی) را حساب می‌کند.
+# ۱۰:۵۰ UTC یعنی ۰۵:۵۰ نیویورک در زمستان و ۰۶:۵۰ در تابستان؛ مدتی زودتر از ۰۸:۳۰ تا تأخیر احتمالی GitHub جبران شود.
+# سه زمان‌بندی یکی‌اند و فقط یک ربات هم‌زمان اجرا می‌شود (concurrency)؛ بقیه پشتیبان‌اند.
+on:
+  schedule:
+    - cron: "50 10 * * 1-5"
+    - cron: "50 11 * * 1-5"
+    - cron: "10 12 * * 1-5"
+  workflow_dispatch:
+
+concurrency:
+  group: ny-setup-bot
+  cancel-in-progress: false
+
+permissions:
+  contents: write
+
+jobs:
+  bot:
+    runs-on: ubuntu-latest
+    timeout-minutes: 350
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+
+      - name: نصب کتابخانه‌ها
+        run: pip install -r requirements.txt
+
+      - name: آماده‌سازی شاخه‌ی ذخیره‌ی وضعیت
+        run: bash tools/prepare_state.sh
+
+      - name: اجرای ربات
+        env:
+          TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+          TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
+          TWELVEDATA_API_KEY: ${{ secrets.TWELVEDATA_API_KEY }}
+        run: python -u -m bot.runner
+
+      - name: جلوگیری از غیرفعال‌شدن زمان‌بندی (هر ~۴۰ روز یک commit خالی)
+        if: always()
+        run: |
+          branch="${{ github.event.repository.default_branch }}"
+          last=$(git log -1 --format=%ct HEAD)
+          now=$(date +%s)
+          if [ $(( (now - last) / 86400 )) -ge 40 ]; then
+            git commit --allow-empty -qm "keepalive" && git push origin "HEAD:${branch}" || true
+          fi
