@@ -1,1 +1,9 @@
-{}
+{
+ "day": "2026-11-17",
+ "start_sent": true,
+ "end_sent": false,
+ "zones": {},
+ "stale": {},
+ "lag_data": [],
+ "lag_send": []
+}
