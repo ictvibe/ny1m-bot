@@ -1,7 +1,7 @@
 {
  "day": "2026-11-17",
  "start_sent": true,
- "end_sent": false,
+ "end_sent": true,
  "zones": {
   "US30-B-1117-0844": {
    "symbol": "US30",
