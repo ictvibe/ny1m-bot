@@ -119,6 +119,17 @@
    "entered": true,
    "entry_msg": 40,
    "entry_t": 1794927182.5808527
+  },
+  "NAS100-S-1117-0944": {
+   "symbol": "NAS100",
+   "side": "SELL",
+   "type": "1",
+   "hunted": 27350.0,
+   "broken": 27292.5,
+   "mss_t": 1794926580,
+   "msg": 41,
+   "created": 1794927188.7170327,
+   "entered": false
   }
  },
  "stale": {},
