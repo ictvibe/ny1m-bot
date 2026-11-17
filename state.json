@@ -298,7 +298,22 @@
    "mss_t": 1794928740,
    "msg": 69,
    "created": 1794929343.906043,
-   "entered": false
+   "entered": true,
+   "entry_msg": 71,
+   "entry_t": 1794929343.434024
+  },
+  "XAUUSD-B-1117-1020b": {
+   "symbol": "XAUUSD",
+   "side": "BUY",
+   "type": "2",
+   "hunted": 3857.5,
+   "broken": 3859.39990234375,
+   "mss_t": 1794928740,
+   "msg": 70,
+   "created": 1794929344.3774426,
+   "entered": true,
+   "entry_msg": 72,
+   "entry_t": 1794929343.434024
   }
  },
  "stale": {},
