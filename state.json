@@ -431,6 +431,17 @@
    "entered": true,
    "entry_msg": 188,
    "entry_t": 1795017604.1516936
+  },
+  "NAS100-B-1118-1051": {
+   "symbol": "NAS100",
+   "side": "BUY",
+   "type": "2",
+   "hunted": 27009.25,
+   "broken": 27035.75,
+   "mss_t": 1795017000,
+   "msg": 189,
+   "created": 1795017607.7767575,
+   "entered": false
   }
  },
  "stale": {},
