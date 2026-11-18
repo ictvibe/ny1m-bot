@@ -337,6 +337,19 @@
    "mss_t": 1795015860,
    "msg": 169,
    "created": 1795016464.8193195,
+   "entered": true,
+   "entry_msg": 170,
+   "entry_t": 1795016464.2188487
+  },
+  "US30-S-1118-1032": {
+   "symbol": "US30",
+   "side": "SELL",
+   "type": "1",
+   "hunted": 50413.0,
+   "broken": 50357.0,
+   "mss_t": 1795015860,
+   "msg": 171,
+   "created": 1795016465.933538,
    "entered": false
   }
  },
