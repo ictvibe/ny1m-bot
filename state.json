@@ -142,7 +142,9 @@
    "mss_t": 1795012020,
    "msg": 127,
    "created": 1795012626.496004,
-   "entered": false
+   "entered": true,
+   "entry_msg": 128,
+   "entry_t": 1795012625.6920154
   }
  },
  "stale": {},
