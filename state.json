@@ -54,6 +54,17 @@
    "entered": true,
    "entry_msg": 110,
    "entry_t": 1795011003.6301563
+  },
+  "SPX500-B-1118-0901": {
+   "symbol": "SPX500",
+   "side": "BUY",
+   "type": "1",
+   "hunted": 7384.0,
+   "broken": 7387.0,
+   "mss_t": 1795010400,
+   "msg": 111,
+   "created": 1795011032.287026,
+   "entered": false
   }
  },
  "stale": {},
