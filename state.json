@@ -12,7 +12,9 @@
    "mss_t": 1795009020,
    "msg": 98,
    "created": 1795009231.461876,
-   "entered": false
+   "entered": true,
+   "entry_msg": 104,
+   "entry_t": 1795009025
   },
   "SPX500-B-1118-0838": {
    "symbol": "SPX500",
