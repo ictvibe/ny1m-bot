@@ -314,6 +314,17 @@
    "entered": true,
    "entry_msg": 269,
    "entry_t": 1795102503.401047
+  },
+  "US30-S-1119-1026": {
+   "symbol": "US30",
+   "side": "SELL",
+   "type": "1",
+   "hunted": 50027.0,
+   "broken": 49981.0,
+   "mss_t": 1795101900,
+   "msg": 270,
+   "created": 1795102509.2448275,
+   "entered": false
   }
  },
  "stale": {},
