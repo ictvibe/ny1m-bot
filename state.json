@@ -90,6 +90,19 @@
    "mss_t": 1795096920,
    "msg": 228,
    "created": 1795097552.5429108,
+   "entered": true,
+   "entry_msg": 229,
+   "entry_t": 1795097525.383625
+  },
+  "US30-B-1119-0903": {
+   "symbol": "US30",
+   "side": "BUY",
+   "type": "1",
+   "hunted": 50531.0,
+   "broken": 50537.0,
+   "mss_t": 1795096920,
+   "msg": 230,
+   "created": 1795097553.62814,
    "entered": false
   }
  },
