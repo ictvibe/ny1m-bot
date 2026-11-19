@@ -207,7 +207,22 @@
    "mss_t": 1795098900,
    "msg": 248,
    "created": 1795099530.535607,
-   "entered": false
+   "entered": true,
+   "entry_msg": 249,
+   "entry_t": 1795099503.395391
+  },
+  "US30-S-1119-0936": {
+   "symbol": "US30",
+   "side": "SELL",
+   "type": "1",
+   "hunted": 50506.0,
+   "broken": 50453.0,
+   "mss_t": 1795098900,
+   "msg": 250,
+   "created": 1795099531.649931,
+   "entered": true,
+   "entry_msg": 251,
+   "entry_t": 1795099531.079831
   }
  },
  "stale": {},
