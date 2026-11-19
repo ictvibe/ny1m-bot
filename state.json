@@ -67,6 +67,19 @@
    "entered": true,
    "entry_msg": 225,
    "entry_t": 1795097168.2050843
+  },
+  "US30-B-1119-0857": {
+   "symbol": "US30",
+   "side": "BUY",
+   "type": "1",
+   "hunted": 50535.0,
+   "broken": 50555.0,
+   "mss_t": 1795096560,
+   "msg": 226,
+   "created": 1795097171.1206777,
+   "entered": true,
+   "entry_msg": 227,
+   "entry_t": 1795097170.53104
   }
  },
  "stale": {},
