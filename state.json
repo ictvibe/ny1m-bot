@@ -324,6 +324,30 @@
    "mss_t": 1795101900,
    "msg": 270,
    "created": 1795102509.2448275,
+   "entered": true,
+   "entry_msg": 271,
+   "entry_t": 1795102508.6093402
+  },
+  "SPX500-S-1119-1026": {
+   "symbol": "SPX500",
+   "side": "SELL",
+   "type": "1",
+   "hunted": 7358.25,
+   "broken": 7352.5,
+   "mss_t": 1795101900,
+   "msg": 272,
+   "created": 1795102509.8898606,
+   "entered": false
+  },
+  "SPX500-S-1119-1026b": {
+   "symbol": "SPX500",
+   "side": "SELL",
+   "type": "2",
+   "hunted": 7358.25,
+   "broken": 7349.25,
+   "mss_t": 1795101900,
+   "msg": 273,
+   "created": 1795102510.3204062,
    "entered": false
   }
  },
