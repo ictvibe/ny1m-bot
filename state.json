@@ -457,6 +457,17 @@
    "entered": true,
    "entry_msg": 370,
    "entry_t": 1795191962.2231724
+  },
+  "SPX500-S-1120-1117": {
+   "symbol": "SPX500",
+   "side": "SELL",
+   "type": "2",
+   "hunted": 7121.0,
+   "broken": 7108.75,
+   "mss_t": 1795191360,
+   "msg": 371,
+   "created": 1795191992.162498,
+   "entered": false
   }
  },
  "stale": {},
