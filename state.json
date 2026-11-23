@@ -223,6 +223,17 @@
    "entered": true,
    "entry_msg": 417,
    "entry_t": 1795448043.4247468
+  },
+  "US30-B-1123-1025": {
+   "symbol": "US30",
+   "side": "BUY",
+   "type": "1+2",
+   "hunted": 49674.0,
+   "broken": 49712.0,
+   "mss_t": 1795447440,
+   "msg": 418,
+   "created": 1795448050.4700272,
+   "entered": false
   }
  },
  "stale": {},
