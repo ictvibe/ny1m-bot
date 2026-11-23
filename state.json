@@ -285,7 +285,9 @@
    "mss_t": 1795449000,
    "msg": 427,
    "created": 1795449609.1594374,
-   "entered": false
+   "entered": true,
+   "entry_msg": 428,
+   "entry_t": 1795449608.512444
   }
  },
  "stale": {},
