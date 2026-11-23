@@ -197,6 +197,17 @@
    "entered": true,
    "entry_msg": 412,
    "entry_t": 1795447504.6596391
+  },
+  "XAUUSD-B-1123-1016": {
+   "symbol": "XAUUSD",
+   "side": "BUY",
+   "type": "1",
+   "hunted": 3660.0,
+   "broken": 3664.10009765625,
+   "mss_t": 1795446900,
+   "msg": 413,
+   "created": 1795447508.6929154,
+   "entered": false
   }
  },
  "stale": {},
