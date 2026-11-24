@@ -324,7 +324,9 @@
    "mss_t": 1795532940,
    "msg": 502,
    "created": 1795533548.1154575,
-   "entered": false
+   "entered": true,
+   "entry_msg": 506,
+   "entry_t": 1795533000
   },
   "NAS100-B-1124-1010b": {
    "symbol": "NAS100",
