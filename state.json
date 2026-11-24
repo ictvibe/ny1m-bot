@@ -427,6 +427,17 @@
    "msg": 520,
    "created": 1795535883.7610886,
    "entered": false
+  },
+  "US30-S-1124-1049": {
+   "symbol": "US30",
+   "side": "SELL",
+   "type": "2",
+   "hunted": 49690.0,
+   "broken": 49596.0,
+   "mss_t": 1795535280,
+   "msg": 521,
+   "created": 1795535884.6568353,
+   "entered": false
   }
  },
  "stale": {},
