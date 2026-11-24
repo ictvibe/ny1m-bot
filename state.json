@@ -478,7 +478,22 @@
    "mss_t": 1795536540,
    "msg": 530,
    "created": 1795537149.7325923,
-   "entered": false
+   "entered": true,
+   "entry_msg": 531,
+   "entry_t": 1795537149.12126
+  },
+  "US30-B-1124-1110": {
+   "symbol": "US30",
+   "side": "BUY",
+   "type": "2",
+   "hunted": 49577.0,
+   "broken": 49635.0,
+   "mss_t": 1795536540,
+   "msg": 532,
+   "created": 1795537150.8157904,
+   "entered": true,
+   "entry_msg": 533,
+   "entry_t": 1795537150.2344172
   }
  },
  "stale": {},
