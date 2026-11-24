@@ -340,6 +340,17 @@
    "entered": true,
    "entry_msg": 504,
    "entry_t": 1795533563.396183
+  },
+  "XAUUSD-S-1124-1011": {
+   "symbol": "XAUUSD",
+   "side": "SELL",
+   "type": "1",
+   "hunted": 3609.699951171875,
+   "broken": 3605.699951171875,
+   "mss_t": 1795533000,
+   "msg": 507,
+   "created": 1795533610.2282825,
+   "entered": false
   }
  },
  "stale": {},
