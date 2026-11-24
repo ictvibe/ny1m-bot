@@ -426,7 +426,9 @@
    "mss_t": 1795535280,
    "msg": 520,
    "created": 1795535883.7610886,
-   "entered": false
+   "entered": true,
+   "entry_msg": 522,
+   "entry_t": 1795535886.4658918
   },
   "US30-S-1124-1049": {
    "symbol": "US30",
