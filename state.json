@@ -379,6 +379,17 @@
    "entered": true,
    "entry_msg": 622,
    "entry_t": 1795621743.8482997
+  },
+  "US30-S-1125-1040": {
+   "symbol": "US30",
+   "side": "SELL",
+   "type": "1",
+   "hunted": 49485.0,
+   "broken": 49385.0,
+   "mss_t": 1795621140,
+   "msg": 623,
+   "created": 1795621745.400001,
+   "entered": false
   }
  },
  "stale": {},
