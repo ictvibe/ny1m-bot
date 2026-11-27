@@ -286,6 +286,17 @@
    "entered": true,
    "entry_msg": 713,
    "entry_t": 1795793524.6981215
+  },
+  "SPX500-B-1127-1023": {
+   "symbol": "SPX500",
+   "side": "BUY",
+   "type": "1",
+   "hunted": 7242.75,
+   "broken": 7251.75,
+   "mss_t": 1795792920,
+   "msg": 714,
+   "created": 1795793530.0727284,
+   "entered": false
   }
  },
  "stale": {},
