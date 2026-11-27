@@ -205,7 +205,9 @@
    "mss_t": 1795791900,
    "msg": 698,
    "created": 1795792510.8913708,
-   "entered": false
+   "entered": true,
+   "entry_msg": 700,
+   "entry_t": 1795791960
   },
   "SPX500-B-1127-1007": {
    "symbol": "SPX500",
@@ -216,7 +218,9 @@
    "mss_t": 1795791960,
    "msg": 699,
    "created": 1795792564.479971,
-   "entered": false
+   "entered": true,
+   "entry_msg": 701,
+   "entry_t": 1795792563.7413468
   }
  },
  "stale": {},
