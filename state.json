@@ -166,7 +166,22 @@
    "mss_t": 1795791900,
    "msg": 692,
    "created": 1795792505.0119843,
-   "entered": false
+   "entered": true,
+   "entry_msg": 694,
+   "entry_t": 1795792504.178366
+  },
+  "NAS100-S-1127-1006b": {
+   "symbol": "NAS100",
+   "side": "SELL",
+   "type": "2",
+   "hunted": 26270.25,
+   "broken": 26237.5,
+   "mss_t": 1795791900,
+   "msg": 693,
+   "created": 1795792505.606405,
+   "entered": true,
+   "entry_msg": 695,
+   "entry_t": 1795792504.178366
   }
  },
  "stale": {},
