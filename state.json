@@ -13,6 +13,28 @@
    "msg": 667,
    "created": 1795790435.2660856,
    "entered": false
+  },
+  "SPX500-B-1127-0931": {
+   "symbol": "SPX500",
+   "side": "BUY",
+   "type": "1",
+   "hunted": 7245.75,
+   "broken": 7252.75,
+   "mss_t": 1795789800,
+   "msg": 668,
+   "created": 1795790435.8938804,
+   "entered": false
+  },
+  "XAUUSD-B-1127-0931": {
+   "symbol": "XAUUSD",
+   "side": "BUY",
+   "type": "1",
+   "hunted": 3620.39990234375,
+   "broken": 3622.0,
+   "mss_t": 1795789800,
+   "msg": 669,
+   "created": 1795790436.434982,
+   "entered": false
   }
  },
  "stale": {},
